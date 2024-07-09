@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Wetterhub.Views.Luftquali"
+             xmlns:Models="clr-namespace:Wetterhub.Models"
+             xmlns:Converter="clr-namespace:Wetterhub.Views.Converter"
+             xmlns:gauge="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
+             Title="Luftqualität">
+
+    <ContentPage.BindingContext>
+        <Models:Luftquali/>
+    </ContentPage.BindingContext>
+    <ContentPage.Resources>
+        <Converter:TimestampConverter x:Key="TimestampConverter"/>
+    </ContentPage.Resources>
+
+    <ScrollView>
+
+        <Grid RowDefinitions="60,50,30,150,50,190,*,50" ColumnDefinitions="*,*">
+
+            <Label Margin="0" Padding="0,0,0,10" Grid.Column="0" Grid.ColumnSpan="2" Grid.Row="0"
+                Text="{Binding DTO.List[0].AirQuality.Aqi, StringFormat='Luftqualitätsindex: {0}', FallbackValue='0', TargetNullValue='0'}"
+                FontSize="20"
+                FontAttributes="Bold"
+                VerticalOptions="Center" 
+                HorizontalOptions="Center"/>
+
+            <gauge:SfLinearGauge x:Name="AQI" Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2"
+                             Margin="-20" 
+                             Interval="1" 
+                             WidthRequest="340"
+                             Minimum="1" 
+                             Maximum="5" 
+                             ShowTicks="False" 
+                             LabelOffset="10"
+                             >
+                <gauge:SfLinearGauge.LabelStyle>
+                    <gauge:GaugeLabelStyle FontAttributes="Bold" FontSize="18" 
+                                       TextColor="{AppThemeBinding Light=Black, Dark=White}"
+                                       />
+                </gauge:SfLinearGauge.LabelStyle>
+                <gauge:SfLinearGauge.Ranges>
+                    <gauge:LinearRange>
+                        <gauge:LinearRange.GradientStops>
+                            <gauge:GaugeGradientStop Value="1" Color="#99ff99"/>
+                            <gauge:GaugeGradientStop Value="5" Color="#ff5050"/>
+                        </gauge:LinearRange.GradientStops>
+                    </gauge:LinearRange>
+                </gauge:SfLinearGauge.Ranges>
+                <gauge:SfLinearGauge.MarkerPointers>
+                    <gauge:LinearShapePointer Value="{Binding DTO.List[0].AirQuality.Aqi, FallbackValue='0', TargetNullValue='0'}"                                               StrokeThickness="2" 
+                                              Stroke="#512BD4"  />
+                </gauge:SfLinearGauge.MarkerPointers>
+            </gauge:SfLinearGauge>
+
+
+            <Label Margin="0" Padding="0,0,0,0" Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2"
+            Text="Partikel"
+            FontSize="20"
+            FontAttributes="Bold"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"/>
+
+
+            <gauge:SfRadialGauge Grid.Column="0" Grid.Row="3" Grid.ColumnSpan="1" Margin="-10">
+                <gauge:SfRadialGauge.Axes>
+                    <gauge:RadialAxis 
+                            Minimum="0"
+                            Maximum="50"
+                            Interval="50"
+                            LabelOffset="-30">
+                        <gauge:RadialAxis.AxisLineStyle>
+                            <gauge:RadialLineStyle Fill="#cce6ff" ThicknessUnit="Pixel" Thickness="6">
+                                <gauge:RadialLineStyle.GradientStops>
+                                    <gauge:GaugeGradientStop Value="0"
+                                         Color="Green" />
+                                    <gauge:GaugeGradientStop Value="50"
+                                         Color="Red" />
+                                </gauge:RadialLineStyle.GradientStops>
+
+                            </gauge:RadialLineStyle>
+                        </gauge:RadialAxis.AxisLineStyle>
+                        <gauge:RadialAxis.AxisLabelStyle>
+                            <gauge:GaugeLabelStyle FontSize="10" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </gauge:RadialAxis.AxisLabelStyle>
+                        <gauge:RadialAxis.Pointers>
+                            <gauge:NeedlePointer Value="{Binding DTO.List[0].Components.Pm25, FallbackValue='0', TargetNullValue='0'}" />
+                        </gauge:RadialAxis.Pointers>
+                        <gauge:RadialAxis.Annotations>
+                            <gauge:GaugeAnnotation 
+                                       DirectionUnit="Angle"
+                                       DirectionValue="90"
+                                       PositionFactor="0.5">
+                                <gauge:GaugeAnnotation.Content>
+                                    <Label 
+                                   Text="{Binding DTO.List[0].Components.Pm25, FallbackValue='0', TargetNullValue='0'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                </gauge:GaugeAnnotation.Content>
+                            </gauge:GaugeAnnotation>
+
+                        </gauge:RadialAxis.Annotations>
+
+                    </gauge:RadialAxis>
+                </gauge:SfRadialGauge.Axes>
+            </gauge:SfRadialGauge>
+
+            <gauge:SfRadialGauge 
+                Grid.Column="1" 
+                Grid.Row="3" 
+                Grid.ColumnSpan="1" 
+                Margin="-10">
+                <gauge:SfRadialGauge.Axes>
+                    <gauge:RadialAxis 
+                            Minimum="0"
+                            Maximum="50"
+                            Interval="50"
+                            LabelOffset="-30">
+
+                        <gauge:RadialAxis.AxisLineStyle>
+                            <gauge:RadialLineStyle 
+                                Fill="#cce6ff" 
+                                ThicknessUnit="Pixel" 
+                                Thickness="6">
+                                <gauge:RadialLineStyle.GradientStops>
+                                    <gauge:GaugeGradientStop Value="0"
+                                         Color="Green" />
+                                    <gauge:GaugeGradientStop Value="50"
+                                         Color="Red" />
+                                </gauge:RadialLineStyle.GradientStops>
+
+                            </gauge:RadialLineStyle>
+
+                        </gauge:RadialAxis.AxisLineStyle>
+                        <gauge:RadialAxis.AxisLabelStyle>
+                            <gauge:GaugeLabelStyle FontSize="10" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </gauge:RadialAxis.AxisLabelStyle>
+                        <gauge:RadialAxis.Ranges>
+                        </gauge:RadialAxis.Ranges>
+                        <gauge:RadialAxis.Pointers>
+                            <gauge:NeedlePointer Value="{Binding DTO.List[0].Components.Pm10, FallbackValue='0', TargetNullValue='0'}" />
+                        </gauge:RadialAxis.Pointers>
+                        <gauge:RadialAxis.Annotations>
+                            <gauge:GaugeAnnotation 
+                                       DirectionUnit="Angle"
+                                       DirectionValue="90"
+                                       PositionFactor="0.5">
+                                <gauge:GaugeAnnotation.Content>
+                                    <Label 
+                                   Text="{Binding DTO.List[0].Components.Pm10, FallbackValue='0', TargetNullValue='0'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                </gauge:GaugeAnnotation.Content>
+                            </gauge:GaugeAnnotation>
+
+                        </gauge:RadialAxis.Annotations>
+
+                    </gauge:RadialAxis>
+                </gauge:SfRadialGauge.Axes>
+            </gauge:SfRadialGauge>
+
+            <Label Margin="0" Padding="0,0,0,0" Grid.Column="0" Grid.Row="4" Grid.ColumnSpan="1"
+            Text="PM 2,5"
+            FontSize="20"
+            FontAttributes="Bold"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center"/>
+
+            <Label Margin="0" Padding="0,0,0,0" Grid.Column="1" Grid.Row="4" Grid.ColumnSpan="1"
+            Text="PM 10"
+            FontSize="20"
+            FontAttributes="Bold"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+            <!-- Zusätzliche Values-->
+
+            <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" Margin="30" Padding="0,0,0,0"
+                   Text="{Binding DTO.List[0].Components.Co, StringFormat='Kohlenmonoxid: {0}', FallbackValue='0', TargetNullValue='0'}"
+            />
+            <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" Margin="30" Padding="0,20,0,0"
+                   Text="{Binding DTO.List[0].Components.No, StringFormat='Stickstoffmonoxid: {0}', FallbackValue='0', TargetNullValue='0'}"
+            />
+            <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" Margin="30" Padding="0,40,0,0"
+                   Text="{Binding DTO.List[0].Components.No2, StringFormat='Stickstoffdioxid: {0}', FallbackValue='0', TargetNullValue='0'}"
+            />
+            <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" Margin="30" Padding="0,60,0,0"
+                   Text="{Binding DTO.List[0].Components.O3, StringFormat='Ozon: {0}', FallbackValue='0', TargetNullValue='0'}"
+            />
+            <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" Margin="30" Padding="0,80,0,0"
+                   Text="{Binding DTO.List[0].Components.So2, StringFormat='Schwefeldioxid: {0}', FallbackValue='0', TargetNullValue='0'}"
+            />
+            <Label Grid.Column="0" Grid.Row="5" Grid.ColumnSpan="2" HorizontalTextAlignment="Start" Margin="30" Padding="0,100,0,0"
+                   Text="{Binding DTO.List[0].Components.Nh3, StringFormat='Ammoniak: {0}', FallbackValue='0', TargetNullValue='0'}"
+            />
+
+            <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" FontAttributes="Bold"
+               Text="Alle Werte in μg/m^3" Margin="20,0,0,0" HorizontalTextAlignment="Center" Padding="0,0,0,0"
+            />
+            <Label Grid.Column="0" Grid.Row="6" Grid.ColumnSpan="2" FontAttributes="Bold"
+               Text="{Binding DTO.List[0].Dt, Converter={StaticResource TimestampConverter}, StringFormat='Daten vom {0}', FallbackValue='0', TargetNullValue='0'}" Margin="20,0,0,0" HorizontalTextAlignment="Center" Padding="0,30,0,0"
+            />
+
+
+            <Button
+            Margin="30,0,30,0" Text="Aktualisieren" Clicked="Button_Clicked" Grid.Column="0" Grid.Row="7" Grid.ColumnSpan="2">
+            </Button>
+
+
+        </Grid>
+
+    </ScrollView>
+</ContentPage>

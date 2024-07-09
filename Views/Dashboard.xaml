@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="Wetterhub.Views.Dashboard"
+             xmlns:Models="clr-namespace:Wetterhub.Models"
+             xmlns:gauge="clr-namespace:Syncfusion.Maui.Gauges;assembly=Syncfusion.Maui.Gauges"
+             Title="Dashboard">
+
+    <ContentPage.BindingContext>
+        <Models:Dashboard/>
+    </ContentPage.BindingContext>
+
+    <ScrollView>
+
+        <VerticalStackLayout Margin="-10" Spacing="-15">
+
+
+            <gauge:SfRadialGauge x:Name="TemperatureGauge" HeightRequest="290" Margin="-5">
+                <gauge:SfRadialGauge.Axes>
+                    <gauge:RadialAxis 
+                            Minimum="-20"
+                            Maximum="50"
+                            Interval="10"
+                        EnableLoadingAnimation="True"
+                        AnimationDuration="500"
+                        >
+                        <gauge:RadialAxis.AxisLabelStyle>
+                            <gauge:GaugeLabelStyle FontSize="13" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </gauge:RadialAxis.AxisLabelStyle>
+                        <gauge:RadialAxis.Ranges>
+                            <gauge:RadialRange StartValue="-30"
+                                  EndValue="60">
+                                <gauge:RadialRange.GradientStops>
+                                    <gauge:GaugeGradientStop Value="-20"
+                                                 Color="#3399ff" />
+                                    <gauge:GaugeGradientStop Value="10"
+                                                 Color="#99ff99" />
+                                    <gauge:GaugeGradientStop Value="50"
+                                                 Color="#ff5050" />
+                                </gauge:RadialRange.GradientStops>
+                            </gauge:RadialRange>
+                        </gauge:RadialAxis.Ranges>
+                        <gauge:RadialAxis.Pointers>
+                            <gauge:NeedlePointer Value="{Binding DTO.Main.Temp, FallbackValue='0', TargetNullValue='0'}" />
+                        </gauge:RadialAxis.Pointers>
+                        <gauge:RadialAxis.Annotations>
+                            <gauge:GaugeAnnotation x:Name="annotation"
+                                       DirectionUnit="Angle"
+                                       DirectionValue="90"
+                                       PositionFactor="0.5">
+                                <gauge:GaugeAnnotation.Content>
+                                    <Label 
+                                   Text="{Binding DTO.Main.Temp, StringFormat='{0} °C', FallbackValue='0', TargetNullValue='0'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                </gauge:GaugeAnnotation.Content>
+                            </gauge:GaugeAnnotation>
+
+                        </gauge:RadialAxis.Annotations>
+
+                    </gauge:RadialAxis>
+                </gauge:SfRadialGauge.Axes>
+            </gauge:SfRadialGauge>
+
+
+
+            <gauge:SfRadialGauge x:Name="AirPressureGauge" HeightRequest="290" Margin="-25" >
+                <gauge:SfRadialGauge.Axes>
+                    <gauge:RadialAxis 
+                            Minimum="950"
+                            Maximum="1050"
+                            Interval="10"
+                            EnableLoadingAnimation="True"
+                            AnimationDuration="500">
+                        <gauge:RadialAxis.AxisLineStyle>
+                            <gauge:RadialLineStyle Fill="#cce6ff"/>
+                        </gauge:RadialAxis.AxisLineStyle>
+                        <gauge:RadialAxis.AxisLabelStyle>
+                            <gauge:GaugeLabelStyle FontSize="10" TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                        </gauge:RadialAxis.AxisLabelStyle>
+                        <gauge:RadialAxis.Pointers>
+                            <gauge:NeedlePointer Value="{Binding DTO.Main.Pressure, TargetNullValue='0', FallbackValue='0'}" />
+                        </gauge:RadialAxis.Pointers>
+                        <gauge:RadialAxis.Annotations>
+                            <gauge:GaugeAnnotation x:Name="annotation2"
+                                       DirectionUnit="Angle"
+                                       DirectionValue="90"
+                                       PositionFactor="0.5">
+                                <gauge:GaugeAnnotation.Content>
+                                    <Label 
+                                   Text="{Binding DTO.Main.Pressure, StringFormat='{0} hPa', TargetNullValue='0', FallbackValue='0'}"
+                                   FontSize="20"
+                                   FontAttributes="Bold" 
+                                   TextColor="{AppThemeBinding Light=Black, Dark=White}"/>
+                                </gauge:GaugeAnnotation.Content>
+                            </gauge:GaugeAnnotation>
+
+                        </gauge:RadialAxis.Annotations>
+
+                    </gauge:RadialAxis>
+                </gauge:SfRadialGauge.Axes>
+            </gauge:SfRadialGauge>
+
+            <gauge:SfLinearGauge x:Name="Humidity" Margin="25" Interval="20" WidthRequest="340" EnableAxisAnimation="True" EnableRangeAnimation="True"
+                        AnimationDuration="500">
+                <gauge:SfLinearGauge.LabelStyle>
+                    <gauge:GaugeLabelStyle   
+                                           TextColor="{AppThemeBinding Light=Black, Dark=White}" 
+                                           />
+                </gauge:SfLinearGauge.LabelStyle>
+                <gauge:SfLinearGauge.Ranges>
+                    <gauge:LinearRange>
+                        <gauge:LinearRange.GradientStops>
+                            <gauge:GaugeGradientStop Value="0" Color="#ffe066"/>
+                            <gauge:GaugeGradientStop Value="50" Color="#99ff99"/>
+                            <gauge:GaugeGradientStop Value="100" Color="#3399ff"/>
+                        </gauge:LinearRange.GradientStops>
+                    </gauge:LinearRange>
+                </gauge:SfLinearGauge.Ranges>
+
+                <gauge:SfLinearGauge.MarkerPointers>
+                    <gauge:LinearShapePointer Value="{Binding DTO.Main.Humidity, FallbackValue='0', TargetNullValue='0'}" Stroke="#512BD4" />
+                </gauge:SfLinearGauge.MarkerPointers>
+
+
+            </gauge:SfLinearGauge>
+
+            <Label Margin="0"
+            Text="{Binding DTO.Main.Humidity, StringFormat='{0}% Luftfeuchtigkeit', TargetNullValue='0', FallbackValue='0'}"
+            FontSize="18"
+            FontAttributes="Bold"
+            VerticalOptions="Center" 
+            HorizontalOptions="Center" />
+
+            <Button Margin="30,50,30,0" Text="Aktualisieren" Clicked="Button_Clicked" HeightRequest="40">
+
+            </Button>
+
+
+
+        </VerticalStackLayout>
+
+    </ScrollView>
+
+</ContentPage>
